@@ -3,6 +3,17 @@ import { products } from '../data/products.js';
 
 let productsHTMLContent = '';
 
+function getTotalCartQuantity(cart) {
+  let total = 0;
+  cart.forEach((cartItem) => {
+    total += cartItem.quantity;
+  });
+  return total;
+}
+
+const totalCartQuantity = getTotalCartQuantity(cart);
+document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
+
 products.forEach((product) => {
   productsHTMLContent += `
     <div class="product-container">
@@ -79,11 +90,10 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((addToCartButton) =>
     addProductToCart(selectedProductId, selectedQuantity);
 
     // ✅ Update cart UI count
-    let totalCartQuantity = 0;
-    cart.forEach((cartItem) => {
-      totalCartQuantity += cartItem.quantity;
-    });
 
+    const totalCartQuantity = getTotalCartQuantity(cart);
     document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
   });
 });
+
+
