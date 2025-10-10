@@ -21,3 +21,19 @@ export function addProductToCart(selectedProductId, selectedQuantity) {
     }
     localStorage.setItem('cart',JSON.stringify(cart));
 }
+
+export function removeFromCart(productId) {
+    let index = -1;
+    for(let i = 0; i < cart.length; i++){
+        if(productId === cart[i].productId){
+            index = i;
+            break;
+        }
+    }
+    if(index !== -1){
+        console.log(cart)
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    
+}
