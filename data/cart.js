@@ -1,5 +1,12 @@
 export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+export function getTotalCartQuantity(cart) {
+  let total = 0;
+  cart.forEach((cartItem) => {
+    total += cartItem.quantity;
+  });
+  return total;
+}
 
 // ✅ Add product to cart
 export function addProductToCart(selectedProductId, selectedQuantity) {
@@ -31,7 +38,6 @@ export function removeFromCart(productId) {
         }
     }
     if(index !== -1){
-        console.log(cart)
         cart.splice(index, 1);
         localStorage.setItem('cart', JSON.stringify(cart));
     }

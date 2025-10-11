@@ -1,6 +1,10 @@
 import { cart, removeFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utilities/money.js";
+import { getTotalCartQuantity } from "../data/cart.js";
+
+document.querySelector('.return-to-home-link').innerHTML = `${getTotalCartQuantity(cart)} Items`;
+
 
 
 let cartSummaryHTML = ``;
@@ -105,5 +109,6 @@ document.querySelectorAll('.js-delete-quantity-button').forEach((link) => {
 
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
     container.remove();
+    document.querySelector('.return-to-home-link').innerHTML = `${getTotalCartQuantity(cart)} Items`;
   })
 })
