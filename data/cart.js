@@ -1,5 +1,17 @@
 export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+cart.forEach(item => {
+    if (!item.deliverOptionsId) {
+        item.deliverOptionsId = 1;  // default as number
+    } else {
+        item.deliverOptionsId = Number(item.deliverOptionsId); // normalize type
+    }
+});
+localStorage.setItem('cart', JSON.stringify(cart));
+
+
+localStorage.setItem('cart', JSON.stringify(cart));
+
 export function ifCartEmpty(cart) {
     let cartQuantity = getTotalCartQuantity(cart);
     if (cartQuantity === 0) {
@@ -35,7 +47,8 @@ export function addProductToCart(selectedProductId, selectedQuantity) {
     } else {
         cart.push({
             productId: selectedProductId,
-            quantity: selectedQuantity
+            quantity: selectedQuantity,
+            deliverOptionsId: 1
         });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
