@@ -77,6 +77,6 @@ export function updateDeliveryOption(productId, deliverOptionId){
             matchingItem = item;
         }
     })
-    matchingItem.deliverOptionsId = deliverOptionId;
+    matchingItem.deliverOptionsId = Number(deliverOptionId);
     localStorage.setItem('cart', JSON.stringify(cart));
 }

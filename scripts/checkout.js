@@ -6,7 +6,7 @@ import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js"
 import { deliverOptions } from "../data/deliveryOptions.js";
 
 document.querySelector('.return-to-home-link').innerHTML = `${getTotalCartQuantity(cart)} Items`;
-
+function renderHTML() {
 let cartSummaryHTML = ``;
 
 cart.forEach((cartItem) => {
@@ -85,7 +85,7 @@ function deliverOptionsHTML(matchingProduct, cartItem) {
     const dateString = deliveryDate.format('dddd, MMMM D');
 
     const priceString = deliverOption.priceCents === 0? 'FREE' : `$${formatCurrency(deliverOption.priceCents)} - `;
-    const isChecked = Number(deliverOption.id) === cartItem.deliverOptionsId;
+    const isChecked = Number(deliverOption.id) === Number(cartItem.deliverOptionsId);
     html += 
     `
             <div class="delivery-option js-delivery-option" data-product-id = "${matchingProduct.id}" data-delivery-option-id = "${deliverOption.id}">
@@ -173,5 +173,10 @@ document.querySelectorAll('.js-delivery-option').forEach((option) => {
   option.addEventListener('click', () => {
     const {productId , deliveryOptionId} = option.dataset;
     updateDeliveryOption(productId, deliveryOptionId);
+    renderHTML();
   })
 })
+
+}
+
+renderHTML();
