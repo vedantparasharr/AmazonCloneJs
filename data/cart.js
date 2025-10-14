@@ -49,6 +49,7 @@ export function addProductToCart(selectedProductId, selectedQuantity) {
             productId: selectedProductId,
             quantity: selectedQuantity,
             deliverOptionsId: 1
+            
         });
     }
     localStorage.setItem('cart', JSON.stringify(cart));

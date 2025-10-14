@@ -1,3 +1,13 @@
+export function getDeliveryOption(deliverOptionId){
+    let deliverOption;
+        deliverOptions.forEach((option) => {
+            if (option.id === deliverOptionId) {
+                deliverOption = option;
+            }
+        })
+        return deliverOption || deliverOptions[0] ;
+}
+
 export const deliverOptions = [
     {
         id: 1,

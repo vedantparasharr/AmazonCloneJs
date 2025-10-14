@@ -1,9 +1,10 @@
 import { addProductToCart, cart, removeFromCart } from "../../data/cart.js"
-import { products } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utilities/money.js";
 import { getTotalCartQuantity, ifCartEmpty, updateDeliveryOption } from "../../data/cart.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js"
-import { deliverOptions } from "../../data/deliveryOptions.js";
+import { deliverOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 document.querySelector('.return-to-home-link').innerHTML = `${getTotalCartQuantity(cart)} Items`;
 export function renderHTML() {
@@ -11,21 +12,11 @@ export function renderHTML() {
 
     cart.forEach((cartItem) => {
         const productId = cartItem.productId;
-        let matchingProduct;
-
-        products.forEach((product) => {
-            if (product.id === productId) {
-                matchingProduct = product;
-            }
-        });
+        let matchingProduct = getProduct(productId);
 
         const deliverOptionId = cartItem.deliverOptionsId;
-        let deliverOption;
-        deliverOptions.forEach((option) => {
-            if (option.id === deliverOptionId) {
-                deliverOption = option;
-            }
-        })
+        let deliverOption = getDeliveryOption(deliverOptionId);
+        
 
         const today = dayjs();
         const deliveryDate = today.add(deliverOption.deliveryDays, 'days');
@@ -122,6 +113,7 @@ export function renderHTML() {
             }
             ifCartEmpty(cart);
             document.querySelector('.return-to-home-link').innerHTML = `${getTotalCartQuantity(cart)} Items`;
+            renderPaymentSummary();
         })
     })
 
@@ -130,9 +122,7 @@ export function renderHTML() {
             const productId = link.dataset.productId;
             const container = document.querySelector(`.js-cart-item-container-${productId}`);
             const inputField = container.querySelector('.quantity-input');
-
             inputField.value = container.querySelector('.quantity-label').innerHTML;
-
             container.classList.add('is-editing-quantity');
         });
     });
@@ -164,6 +154,7 @@ export function renderHTML() {
             } else {
                 alert('Not a valid input');
             }
+            renderPaymentSummary();
         });
 
     });
