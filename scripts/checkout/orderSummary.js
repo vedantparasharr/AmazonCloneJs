@@ -6,6 +6,21 @@ import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js"
 import { deliverOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 
+function getDateString (deliverOption) {
+        let date = dayjs();
+        let daysToAdd = deliverOption.deliveryDays;
+        
+        while(daysToAdd > 0){
+            date = date.add(1, 'day');
+            if(date.day() !== 0 && date.day() !== 6){
+                daysToAdd--;
+            }
+        }
+
+
+        return date.format('dddd, MMMM D');
+}
+
 document.querySelector('.return-to-home-link').innerHTML = `${getTotalCartQuantity(cart)} Items`;
 export function renderHTML() {
     let cartSummaryHTML = ``;
@@ -18,9 +33,7 @@ export function renderHTML() {
         let deliverOption = getDeliveryOption(deliverOptionId);
         
 
-        const today = dayjs();
-        const deliveryDate = today.add(deliverOption.deliveryDays, 'days');
-        const dateString = deliveryDate.format('dddd, MMMM D');
+        let dateString = getDateString(deliverOption);
 
 
         cartSummaryHTML += `
@@ -71,9 +84,7 @@ export function renderHTML() {
         let html = '';
         deliverOptions.forEach((deliverOption) => {
 
-            const today = dayjs();
-            const deliveryDate = today.add(deliverOption.deliveryDays, 'days');
-            const dateString = deliveryDate.format('dddd, MMMM D');
+            const dateString =  getDateString(deliverOption);
 
             const priceString = deliverOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliverOption.priceCents)} - `;
             const isChecked = Number(deliverOption.id) === Number(cartItem.deliverOptionsId);
@@ -108,11 +119,9 @@ export function renderHTML() {
             const productId = link.dataset.productId;
             removeFromCart(productId);
             const container = document.querySelector(`.js-cart-item-container-${productId}`);
-            if (container) {
-                container.remove();
-            }
             ifCartEmpty(cart);
             document.querySelector('.return-to-home-link').innerHTML = `${getTotalCartQuantity(cart)} Items`;
+            renderHTML();
             renderPaymentSummary();
         })
     })
@@ -170,3 +179,4 @@ export function renderHTML() {
     })
 
 }
+
