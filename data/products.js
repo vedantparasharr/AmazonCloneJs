@@ -1,13 +1,17 @@
-export function getProduct(productId){
+// Purpose: Product catalog and helper to fetch a product by id (no logic changes).
+
+// --- Helpers ---
+export function getProduct(productId) {
   let matchingProduct;
   products.forEach((item) => {
-    if(item.id === productId){
+    if (item.id === productId) {
       matchingProduct = item;
     }
-  })
+  });
   return matchingProduct;
 }
 
+// --- Catalog ---
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",

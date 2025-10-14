@@ -1,14 +1,23 @@
+
+// File: scripts/amazon.js
+// Purpose: Render product grid and handle Add to Cart UI without changing logic.
+
+// --- Imports ---
 import { cart, addProductToCart } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utilities/money.js';
 import { getTotalCartQuantity } from '../data/cart.js';
-let productsHTMLContent = '';
 
-const totalCartQuantity = getTotalCartQuantity(cart);
-document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
+// --- State used to build products grid HTML ---
+let productsHTML = ''; // Previously: productsHTMLContent (shorter, same meaning)
 
+// --- Initialize cart count in header ---
+const initialCartQty = getTotalCartQuantity(cart);
+document.querySelector('.js-cart-quantity').innerHTML = initialCartQty;
+
+// --- Build products grid markup ---
 products.forEach((product) => {
-  productsHTMLContent += `
+  productsHTML += `
     <div class="product-container">
       <div class="product-image-container">
         <img class="product-image" src="${product.image}">
@@ -51,18 +60,24 @@ products.forEach((product) => {
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary js-add-to-cart-button" data-product-id="${product.id}">
+      <button
+        class="add-to-cart-button button-primary js-add-to-cart-button"
+        data-product-id="${product.id}">
         Add to Cart
       </button>
-    </div>           
+    </div>
   `;
 });
 
-document.querySelector('.js-products-grid').innerHTML = productsHTMLContent;
+// --- Inject products grid into DOM ---
+document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-// ✅ Display "Added" message
+// --- UI helper: show "Added" for a short time on the clicked card ---
 function showAddedMessage(addToCartButton) {
-  const addedMessageElement = addToCartButton.closest('.product-container').querySelector('.added-to-cart');
+  const addedMessageElement = addToCartButton
+    .closest('.product-container')
+    .querySelector('.added-to-cart');
+
   addedMessageElement.style.opacity = '1';
 
   clearTimeout(addToCartButton.timeoutId);
@@ -71,22 +86,19 @@ function showAddedMessage(addToCartButton) {
   }, 1250);
 }
 
-// ✅ Event Listener for Add to Cart button
+// --- Add to Cart: click handlers (uses existing cart logic) ---
 document.querySelectorAll('.js-add-to-cart-button').forEach((addToCartButton) => {
   addToCartButton.addEventListener('click', () => {
-
     const selectedProductId = addToCartButton.dataset.productId;
     const quantitySelector = document.querySelector(`.js-quantity-selector-${selectedProductId}`);
-    let selectedQuantity = Number(quantitySelector.value);
+    const selectedQuantity = Number(quantitySelector.value);
 
     showAddedMessage(addToCartButton);
     addProductToCart(selectedProductId, selectedQuantity);
 
-    // ✅ Update cart UI count
-
+    // Update cart quantity in header
     const totalCartQuantity = getTotalCartQuantity(cart);
     document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
   });
 });
-
 

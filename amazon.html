@@ -1,60 +1,66 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <!-- Page: Amazon-style product grid landing (UI only) -->
     <title>Amazon Project</title>
 
-    <!-- This code is needed for responsive design to work.
-      (Responsive design = make the website look good on
-      smaller screen sizes like a phone or a tablet). -->
+    <!-- Responsive viewport for mobile-friendly layout -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Load a font called Roboto from Google Fonts. -->
+    <!-- Roboto font (400/500/700) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet">
 
-    <!-- Here are the CSS files for this page. -->
+    <!-- Page styles -->
     <link rel="stylesheet" href="styles/shared/general.css">
     <link rel="stylesheet" href="styles/shared/amazon-header.css">
     <link rel="stylesheet" href="styles/pages/amazon.css">
   </head>
+
   <body>
+    <!-- --- Header --- -->
     <div class="amazon-header">
       <div class="amazon-header-left-section">
-        <a href="amazon.html" class="header-link">
-          <img class="amazon-logo"
-            src="images/amazon-logo-white.png">
-          <img class="amazon-mobile-logo"
-            src="images/amazon-mobile-logo-white.png">
+        <a href="amazon.html" class="header-link" aria-label="Home">
+          <img class="amazon-logo" src="images/amazon-logo-white.png" alt="Amazon logo">
+          <img class="amazon-mobile-logo" src="images/amazon-mobile-logo-white.png" alt="Amazon logo mobile">
         </a>
       </div>
 
       <div class="amazon-header-middle-section">
-        <input class="search-bar" type="text" placeholder="Search">
-
-        <button class="search-button">
-          <img class="search-icon" src="images/icons/search-icon.png">
+        <input class="search-bar" type="text" placeholder="Search" aria-label="Search products">
+        <button class="search-button" aria-label="Search">
+          <img class="search-icon" src="images/icons/search-icon.png" alt="Search">
         </button>
       </div>
 
       <div class="amazon-header-right-section">
-        <a class="orders-link header-link" href="orders.html">
+        <a class="orders-link header-link" href="orders.html" aria-label="Orders and returns">
           <span class="returns-text">Returns</span>
           <span class="orders-text">& Orders</span>
         </a>
 
-        <a class="cart-link header-link" href="checkout.html">
-          <img class="cart-icon" src="images/icons/cart-icon.png">
+        <a class="cart-link header-link" href="checkout.html" aria-label="Cart">
+          <img class="cart-icon" src="images/icons/cart-icon.png" alt="Cart">
           <div class="cart-quantity js-cart-quantity"></div>
           <div class="cart-text">Cart</div>
         </a>
       </div>
     </div>
-    
-    <div class="main">
+
+    <!-- --- Main content --- -->
+    <main class="main">
       <div class="products-grid js-products-grid">
+        <!-- Product cards rendered by scripts/amazon.js -->
       </div>
-    </div>
+    </main>
+
+    <!-- Page script: renders products, handles add-to-cart UI -->
     <script type="module" src="/scripts/amazon.js"></script>
   </body>
 </html>
+
