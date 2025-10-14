@@ -165,6 +165,7 @@ export function renderHTML() {
             const { productId, deliveryOptionId } = option.dataset;
             updateDeliveryOption(productId, deliveryOptionId);
             renderHTML();
+            renderPaymentSummary();
         })
     })
 
