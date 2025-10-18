@@ -1,7 +1,11 @@
 // File: data/cart.js
 // Purpose: Cart state, persistence, and basic operations (no logic changes).
 
-export let cart = JSON.parse(localStorage.getItem('cart')) || [];
+export let cart;
+loadFromStorage();
+export function loadFromStorage() {
+  cart = JSON.parse(localStorage.getItem('cart')) || [];
+}
 
 // Normalize saved items: ensure deliveryOptionId exists and is a number
 cart.forEach((item) => {
