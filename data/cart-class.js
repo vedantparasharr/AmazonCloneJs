@@ -1,6 +1,14 @@
 class Cart {
     cartItems = undefined;
-    localStorageKey = undefined
+    localStorageKey = undefined;
+
+    constructor(localStorageKey) {
+        this.localStorageKey = localStorageKey;
+
+        // Normalize cart items
+        this.loadFromStorage();
+        this.normalizeItems();
+    }
 
     getFromStorage() {
         return JSON.parse(localStorage.getItem(this.localStorageKey)) || [];
@@ -95,11 +103,7 @@ class Cart {
 }
 
 
-const cart = new Cart();
-cart.localStorageKey = 'cart-oops';
+const cart = new Cart('cart-oop');
 
-// Normalize cart items
-cart.loadFromStorage();
-cart.normalizeItems();
 
 console.log(cart);
