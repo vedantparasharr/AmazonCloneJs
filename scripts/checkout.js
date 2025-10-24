@@ -4,7 +4,7 @@
 // --- Imports ---
 import { renderHTML } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-import "../data/cart-oops.js";
+import "../data/cart-class.js";
 
 // --- Render sections ---
 renderHTML();
