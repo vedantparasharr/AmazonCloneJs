@@ -23,8 +23,6 @@ function getDateString(deliveryOption) {
   return date.format("dddd, MMMM D");
 }
 
-// --- Header count ---
-document.querySelector(".return-to-home-link").innerHTML = `${getTotalCartQuantity(cart)} Items`;
 
 // --- Render Order Summary ---
 export function renderHTML() {
@@ -115,6 +113,9 @@ export function renderHTML() {
   const orderSummary = document.querySelector(".js-order-summary");
   orderSummary.innerHTML = cartSummaryHTML;
   ifCartEmpty(cart);
+
+  // --- Header count ---
+  document.querySelector(".return-to-home-link").innerHTML = `${getTotalCartQuantity(cart)} Items`;
 
   // --- Delete item ---
   document.querySelectorAll(".js-delete-quantity-button").forEach((link) => {
