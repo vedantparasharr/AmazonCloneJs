@@ -20,7 +20,7 @@ class Cart {
 
     // Load cart items from local storage
     #loadFromStorage() {
-        this.cartItems = this.getFromStorage();
+        this.cartItems = this.#getFromStorage();
     }
 
     // Add a product to the cart
@@ -42,7 +42,7 @@ class Cart {
                 deliveryOptionId: 1,
             });
         }
-        this.saveToStorage();
+        this.#saveToStorage();
     }
 
     // Remove a product from the cart
@@ -56,8 +56,8 @@ class Cart {
         }
         if (index !== -1) {
             this.cartItems.splice(index, 1);
-            ifCartEmpty(this.cartItems);
-            this.saveToStorage();
+            this.ifCartEmpty();
+            this.#saveToStorage();
         }
     }
 
@@ -73,7 +73,7 @@ class Cart {
     }
 
     // Get total quantity of all items
-    getTotalCartQuantity(cartItems) {
+    getTotalCartQuantity() {
         let total = 0;
         this.cartItems.forEach((cartItem) => {
             total += cartItem.quantity;
@@ -90,14 +90,14 @@ class Cart {
             }
         });
         matchingItem.deliveryOptionId = Number(deliveryOptionId);
-        this.saveToStorage();
+        this.#saveToStorage();
     }
 
     normalizeItems() {
         this.cartItems.forEach((item) => {
             item.deliveryOptionId = Number(item.deliveryOptionId) || 1;
         });
-        this.saveToStorage();
+        this.#saveToStorage();
     }
 
 }
@@ -106,4 +106,4 @@ class Cart {
 const cart = new Cart('cart-oop');
 
 
-console.log(cart);
+export { cart };

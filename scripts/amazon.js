@@ -3,16 +3,15 @@
 // Purpose: Render product grid and handle Add to Cart UI without changing logic.
 
 // --- Imports ---
-import { cart, addProductToCart } from '../data/cart.js';
+import { cart } from "../data/cart-class.js"
 import { products } from '../data/products.js';
 import { formatCurrency } from './utilities/money.js';
-import { getTotalCartQuantity } from '../data/cart.js';
 
 // --- State used to build products grid HTML ---
 let productsHTML = ''; // Previously: productsHTMLContent (shorter, same meaning)
 
 // --- Initialize cart count in header ---
-const initialCartQty = getTotalCartQuantity(cart);
+const initialCartQty = cart.getTotalCartQuantity();
 document.querySelector('.js-cart-quantity').innerHTML = initialCartQty;
 
 // --- Build products grid markup ---
@@ -94,10 +93,10 @@ document.querySelectorAll('.js-add-to-cart-button').forEach((addToCartButton) =>
     const selectedQuantity = Number(quantitySelector.value);
 
     showAddedMessage(addToCartButton);
-    addProductToCart(selectedProductId, selectedQuantity);
+    cart.addProductToCart(selectedProductId, selectedQuantity);
 
     // Update cart quantity in header
-    const totalCartQuantity = getTotalCartQuantity(cart);
+    const totalCartQuantity = cart.getTotalCartQuantity();
     document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
   });
 });

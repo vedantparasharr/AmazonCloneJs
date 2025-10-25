@@ -1,17 +1,17 @@
 // File: scripts/checkout/paymentSummary.js
 // Purpose: Render payment totals based on cart and selected delivery option (no logic changes).
 
-import { cart, getTotalCartQuantity } from "../../data/cart.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utilities/money.js";
+import { cart } from "../../data/cart-class.js";
 
 export function renderPaymentSummary() {
-  let totalItems = getTotalCartQuantity(cart);
+  let totalItems = cart.getTotalCartQuantity();
   let totalPrice = 0;
   let shippingCost = 0;
 
-  cart.forEach((item) => {
+  cart.cartItems.forEach((item) => {
     const productId = item.productId;
     const matchingProduct = getProduct(productId);
     totalPrice += item.quantity * matchingProduct.priceCents;
