@@ -18,6 +18,10 @@ class Cart {
         localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems))
     }
 
+    saveToStorage() {
+        this.#saveToStorage();
+    }
+
     // Load cart items from local storage
     #loadFromStorage() {
         this.cartItems = this.#getFromStorage();
