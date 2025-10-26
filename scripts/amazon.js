@@ -5,7 +5,6 @@
 // --- Imports ---
 import { cart } from "../data/cart-class.js"
 import { products } from '../data/products.js';
-import { formatCurrency } from './utilities/money.js';
 
 // --- State used to build products grid HTML ---
 let productsHTML = ''; // Previously: productsHTMLContent (shorter, same meaning)
@@ -27,14 +26,14 @@ products.forEach((product) => {
       </div>
 
       <div class="product-rating-container">
-        <img class="product-rating-stars" src="images/ratings/rating-${product.rating.stars * 10}.png">
+        <img class="product-rating-stars" src="${product.getStarsURL()}">
         <div class="product-rating-count link-primary">
           ${product.rating.count}
         </div>
       </div>
 
       <div class="product-price">
-        ${formatCurrency(product.priceCents)}
+        ${product.getPrice()}
       </div>
 
       <div class="product-quantity-container">
