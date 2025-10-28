@@ -1,21 +1,22 @@
-
 // File: scripts/amazon.js
-// Purpose: Render product grid and handle Add to Cart UI without changing logic.
+// Purpose: Show all products and handle Add to Cart UI.
 
-// --- Imports ---
-import { cart } from "../data/cart-class.js"
-import { products } from '../data/products.js';
+import { cart } from "../data/cart-class.js";
+import { products, loadProducts } from "../data/products.js";
 
-// --- State used to build products grid HTML ---
-let productsHTML = ''; // Previously: productsHTMLContent (shorter, same meaning)
+loadProducts(renderProductsGrid);
 
-// --- Initialize cart count in header ---
-const initialCartQty = cart.getTotalCartQuantity();
-document.querySelector('.js-cart-quantity').innerHTML = initialCartQty;
+function renderProductsGrid() {
+  // --- Create product grid HTML ---
+  let productsHTML = "";
 
-// --- Build products grid markup ---
-products.forEach((product) => {
-  productsHTML += `
+  // --- Set initial cart count ---
+  const initialCartQty = cart.getTotalCartQuantity();
+  document.querySelector(".js-cart-quantity").innerHTML = initialCartQty;
+
+  // --- Build product cards ---
+  products.forEach((product) => {
+    productsHTML += `
     <div class="product-container">
       <div class="product-image-container">
         <img class="product-image" src="${product.image}">
@@ -66,38 +67,38 @@ products.forEach((product) => {
       </button>
     </div>
   `;
-});
-
-// --- Inject products grid into DOM ---
-document.querySelector('.js-products-grid').innerHTML = productsHTML;
-
-// --- UI helper: show "Added" for a short time on the clicked card ---
-function showAddedMessage(addToCartButton) {
-  const addedMessageElement = addToCartButton
-    .closest('.product-container')
-    .querySelector('.added-to-cart');
-
-  addedMessageElement.style.opacity = '1';
-
-  clearTimeout(addToCartButton.timeoutId);
-  addToCartButton.timeoutId = setTimeout(() => {
-    addedMessageElement.style.opacity = '0';
-  }, 1250);
-}
-
-// --- Add to Cart: click handlers (uses existing cart logic) ---
-document.querySelectorAll('.js-add-to-cart-button').forEach((addToCartButton) => {
-  addToCartButton.addEventListener('click', () => {
-    const selectedProductId = addToCartButton.dataset.productId;
-    const quantitySelector = document.querySelector(`.js-quantity-selector-${selectedProductId}`);
-    const selectedQuantity = Number(quantitySelector.value);
-
-    showAddedMessage(addToCartButton);
-    cart.addProductToCart(selectedProductId, selectedQuantity);
-
-    // Update cart quantity in header
-    const totalCartQuantity = cart.getTotalCartQuantity();
-    document.querySelector('.js-cart-quantity').innerHTML = totalCartQuantity;
   });
-});
 
+  // --- Add grid to page ---
+  document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+  // --- Show “Added” briefly after click ---
+  function showAddedMessage(addToCartButton) {
+    const addedMessageElement = addToCartButton
+      .closest(".product-container")
+      .querySelector(".added-to-cart");
+
+    addedMessageElement.style.opacity = "1";
+
+    clearTimeout(addToCartButton.timeoutId);
+    addToCartButton.timeoutId = setTimeout(() => {
+      addedMessageElement.style.opacity = "0";
+    }, 1250);
+  }
+
+  // --- Handle Add to Cart clicks ---
+  document.querySelectorAll(".js-add-to-cart-button").forEach((addToCartButton) => {
+    addToCartButton.addEventListener("click", () => {
+      const selectedProductId = addToCartButton.dataset.productId;
+      const quantitySelector = document.querySelector(`.js-quantity-selector-${selectedProductId}`);
+      const selectedQuantity = Number(quantitySelector.value);
+
+      showAddedMessage(addToCartButton);
+      cart.addProductToCart(selectedProductId, selectedQuantity);
+
+      // Update cart count
+      const totalCartQuantity = cart.getTotalCartQuantity();
+      document.querySelector(".js-cart-quantity").innerHTML = totalCartQuantity;
+    });
+  });
+}
