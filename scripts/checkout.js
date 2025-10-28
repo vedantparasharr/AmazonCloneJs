@@ -1,11 +1,10 @@
-// File: scripts/checkout.js
-// Purpose: Orchestrate checkout page sections by rendering order and payment summaries.
+// Show checkout page
 
-// --- Imports ---
 import { renderHTML } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-// import "../data/cart-class.js";
 
-// --- Render sections ---
+//backend practice js
+import '../data/backend-practice.js'
+// Show sections
 renderHTML();
 renderPaymentSummary();
