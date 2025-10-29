@@ -8,8 +8,20 @@ import { loadProducts } from "../data/products.js";
 // import '../data/backend-practice.js'
 
 
-// Show sections
-loadProducts(() => {
+Promise.all([
+    new Promise((resolve) => {
+        loadProducts(() => {
+            resolve();
+        });
+    })
+]).then(() => {
     renderHTML();
     renderPaymentSummary();
 })
+
+
+// // Show sections
+// loadProducts(() => {
+//     renderHTML();
+//     renderPaymentSummary();
+// })
