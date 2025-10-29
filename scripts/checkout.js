@@ -7,10 +7,10 @@ import { loadProducts } from "../data/products.js";
 // backend practice
 // import '../data/backend-practice.js'
 
-
-Promise.all([
-    loadProducts()
-]).then(() => {
+async function loadPage() {
+    await loadProducts();
     renderHTML();
     renderPaymentSummary();
-});
+}
+
+loadPage();
