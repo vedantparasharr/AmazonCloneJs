@@ -4,7 +4,9 @@
 import { cart } from "../data/cart-class.js";
 import { products, loadProducts } from "../data/products.js";
 
-loadProducts(renderProductsGrid);
+loadProducts().then(() => {
+  renderProductsGrid();
+})
 
 function renderProductsGrid() {
   // --- Create product grid HTML ---

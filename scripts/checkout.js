@@ -9,19 +9,8 @@ import { loadProducts } from "../data/products.js";
 
 
 Promise.all([
-    new Promise((resolve) => {
-        loadProducts(() => {
-            resolve();
-        });
-    })
+    loadProducts()
 ]).then(() => {
     renderHTML();
     renderPaymentSummary();
-})
-
-
-// // Show sections
-// loadProducts(() => {
-//     renderHTML();
-//     renderPaymentSummary();
-// })
+});
