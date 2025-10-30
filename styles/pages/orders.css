@@ -218,3 +218,14 @@
     padding: 12px;
   }
 }
+
+.added-to-cart-orders {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.added-to-cart-orders img {
+  height: 20px;
+  margin-right: 4px;
+}
