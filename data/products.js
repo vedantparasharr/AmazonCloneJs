@@ -64,5 +64,5 @@ export async function loadProducts() {
       return new Product(productDetails);
     }
   });
-  console.log('Products are loaded');
+  console.log('All Products are loaded!');
 }

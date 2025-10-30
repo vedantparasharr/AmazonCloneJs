@@ -2,9 +2,10 @@
 // Purpose: Render payment totals based on cart and selected delivery option (no logic changes).
 
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
-import { getProduct } from "../../data/products.js";
+import { getProduct, products } from "../../data/products.js";
 import { formatCurrency } from "../utilities/money.js";
 import { cart } from "../../data/cart-class.js";
+import { addOrder, renderOrdersHTML } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
   let totalItems = cart.getTotalCartQuantity();
@@ -58,8 +59,33 @@ export function renderPaymentSummary() {
       <div class="payment-summary-money">$${orderTotal}</div>
     </div>
 
-    <button class="place-order-button button-primary">
+    <button class="place-order-button button-primary js-place-order">
       Place your order
     </button>
-  `;
+  `
+
+  document.querySelector('.js-place-order')
+    .addEventListener('click', async () => {
+      try {
+        const cartItems = cart.cartItems.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          deliveryOptionId: String(item.deliveryOptionId)
+        }));
+
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cart: cartItems })
+        });
+
+        const order = await response.json();
+        addOrder(order);
+        
+      } catch (error) {
+        console.log('Unexpected Error. Please try again later!');
+        throw error;
+      }
+      window.location.href = 'orders.html';
+    });
 }
