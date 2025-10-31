@@ -1,5 +1,5 @@
 // File: scripts/checkout/orderSummary.js
-// Renders the checkout order summary page
+// Purpose: Render checkout page items, quantities, and delivery options
 
 import { cart } from "../../data/cart-class.js";
 import { getProduct } from "../../data/products.js";
@@ -8,7 +8,7 @@ import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliverOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 
-// Get formatted delivery date (skip weekends)
+// Get formatted delivery date (skips weekends)
 function getDateString(deliveryOption) {
   let date = dayjs();
   let daysToAdd = deliveryOption.deliveryDays;
@@ -22,10 +22,11 @@ function getDateString(deliveryOption) {
   return date.format("dddd, MMMM D");
 }
 
-// Render the cart items on the checkout page
+// Main render function for order summary
 export function renderHTML() {
   let cartSummaryHTML = ``;
 
+  // Loop through each item in cart
   cart.cartItems.forEach((cartItem) => {
     const productId = cartItem.productId;
     const matchingProduct = getProduct(productId);
@@ -34,6 +35,7 @@ export function renderHTML() {
     const deliveryOption = getDeliveryOption(deliveryOptionId);
     const dateString = getDateString(deliveryOption);
 
+    // Create HTML for each product in cart
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
         <div class="delivery-date">
@@ -93,15 +95,15 @@ export function renderHTML() {
     return html;
   }
 
-  // Render cart items
+  // Add all cart items to page
   const orderSummary = document.querySelector(".js-order-summary");
   orderSummary.innerHTML = cartSummaryHTML;
   cart.ifCartEmpty();
 
-  // Update total items in header
+  // Update header item count
   document.querySelector(".return-to-home-link").innerHTML = `${cart.getTotalCartQuantity()} Items`;
 
-  // Delete item
+  // Delete item from cart
   document.querySelectorAll(".js-delete-quantity-button").forEach((link) => {
     link.addEventListener("click", () => {
       const productId = link.dataset.productId;

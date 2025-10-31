@@ -1,113 +1,117 @@
+// Cart class
 class Cart {
-    cartItems;
-    #localStorageKey;
+  cartItems;
+  #localStorageKey;
 
-    constructor(localStorageKey) {
-        this.#localStorageKey = localStorageKey;
+  constructor(localStorageKey) {
+    this.#localStorageKey = localStorageKey;
+    this.#loadFromStorage();
+    this.normalizeItems();
+  }
 
-        // Normalize cart items
-        this.#loadFromStorage();
-        this.normalizeItems();
+  // Storage helpers
+  #getFromStorage() {
+    return JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
+  }
+
+  #saveToStorage() {
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
+  }
+
+  saveToStorage() {
+    this.#saveToStorage();
+  }
+
+  #loadFromStorage() {
+    this.cartItems = this.#getFromStorage();
+  }
+
+  // Add item
+  addProductToCart(selectedProductId, selectedQuantity) {
+    let existingCartItem;
+
+    this.cartItems.forEach((cartItem) => {
+      if (cartItem.productId === selectedProductId) {
+        existingCartItem = cartItem;
+      }
+    });
+
+    if (existingCartItem) {
+      existingCartItem.quantity += selectedQuantity;
+    } else {
+      this.cartItems.push({
+        productId: selectedProductId,
+        quantity: selectedQuantity,
+        deliveryOptionId: 1,
+      });
     }
 
-    #getFromStorage() {
-        return JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
+    this.#saveToStorage();
+  }
+
+  // Remove item
+  removeFromCart(productId) {
+    let index = -1;
+
+    for (let i = 0; i < this.cartItems.length; i++) {
+      if (productId === this.cartItems[i].productId) {
+        index = i;
+        break;
+      }
     }
 
-    #saveToStorage() {
-        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems))
+    if (index !== -1) {
+      this.cartItems.splice(index, 1);
+      this.ifCartEmpty();
+      this.#saveToStorage();
     }
+  }
 
-    saveToStorage() {
-        this.#saveToStorage();
+  // Empty cart message
+  ifCartEmpty() {
+    const cartItemsQuantity = this.getTotalCartQuantity();
+    if (cartItemsQuantity === 0) {
+      document.querySelector(".js-order-summary").innerHTML = `
+        <p class="view-products-p">Your cart is empty</p>
+        <a href="/amazon.html" class="view-products-button">View Products</a>
+      `;
     }
+  }
 
-    // Load cart items from local storage
-    #loadFromStorage() {
-        this.cartItems = this.#getFromStorage();
-    }
+  // Get total items
+  getTotalCartQuantity() {
+    let total = 0;
+    this.cartItems.forEach((cartItem) => {
+      total += cartItem.quantity;
+    });
+    return total;
+  }
 
-    // Add a product to the cart
-    addProductToCart(selectedProductId, selectedQuantity) {
-        let existingCartItem;
+  // Update delivery
+  updateDeliveryOption(productId, deliveryOptionId) {
+    let matchingItem;
 
-        this.cartItems.forEach((cartItem) => {
-            if (cartItem.productId === selectedProductId) {
-                existingCartItem = cartItem;
-            }
-        });
+    this.cartItems.forEach((item) => {
+      if (productId === item.productId) {
+        matchingItem = item;
+      }
+    });
 
-        if (existingCartItem) {
-            existingCartItem.quantity += selectedQuantity;
-        } else {
-            this.cartItems.push({
-                productId: selectedProductId,
-                quantity: selectedQuantity,
-                deliveryOptionId: 1,
-            });
-        }
-        this.#saveToStorage();
-    }
+    matchingItem.deliveryOptionId = Number(deliveryOptionId);
+    this.#saveToStorage();
+  }
 
-    // Remove a product from the cart
-    removeFromCart(productId) {
-        let index = -1;
-        for (let i = 0; i < this.cartItems.length; i++) {
-            if (productId === this.cartItems[i].productId) {
-                index = i;
-                break;
-            }
-        }
-        if (index !== -1) {
-            this.cartItems.splice(index, 1);
-            this.ifCartEmpty();
-            this.#saveToStorage();
-        }
-    }
-
-    // Show "empty cart" message
-    ifCartEmpty() {
-        const cartItemsQuantity = this.getTotalCartQuantity();
-        if (cartItemsQuantity === 0) {
-            document.querySelector('.js-order-summary').innerHTML = `
-                <p class="view-products-p">Your cart is empty</p>
-                <a href="/amazon.html" class="view-products-button">View Products</a>
-            `;
-        }
-    }
-
-    // Get total quantity of all items
-    getTotalCartQuantity() {
-        let total = 0;
-        this.cartItems.forEach((cartItem) => {
-            total += cartItem.quantity;
-        });
-        return total;
-    }
-
-    // Update delivery option for a product
-    updateDeliveryOption(productId, deliveryOptionId) {
-        let matchingItem;
-        this.cartItems.forEach((item) => {
-            if (productId === item.productId) {
-                matchingItem = item;
-            }
-        });
-        matchingItem.deliveryOptionId = Number(deliveryOptionId);
-        this.#saveToStorage();
-    }
-
-    normalizeItems() {
-        this.cartItems.forEach((item) => {
-            item.deliveryOptionId = Number(item.deliveryOptionId) || 1;
-        });
-        this.#saveToStorage();
-    }
-
+  // Normalize
+  normalizeItems() {
+    this.cartItems.forEach((item) => {
+      item.deliveryOptionId = Number(item.deliveryOptionId) || 1;
+    });
+    this.#saveToStorage();
+  }
 }
 
+// Create cart
+const cart = new Cart("cart-oop");
 
-const cart = new Cart('cart-oop');
-
-
+// Export
 export { cart };

@@ -1,6 +1,7 @@
-// Purpose: Product catalog and helper to fetch a product by id (no logic changes).
+// Imports
 import { formatCurrency } from "../scripts/utilities/money.js";
-// --- Helpers ---
+
+// Get product by id
 export function getProduct(productId) {
   let matchingProduct;
   products.forEach((item) => {
@@ -11,6 +12,7 @@ export function getProduct(productId) {
   return matchingProduct;
 }
 
+// Product class
 class Product {
   id;
   image;
@@ -40,6 +42,7 @@ class Product {
   }
 }
 
+// Clothing class
 class Clothing extends Product {
   sizeChartLink;
 
@@ -49,20 +52,25 @@ class Clothing extends Product {
   }
 
   extraInfoHTML() {
-    return `<a href="/images/clothing-size-chart.png" target="_blank">Size Chart</a>`
+    return `<a href="/images/clothing-size-chart.png" target="_blank">Size Chart</a>`;
   }
-};
+}
 
+// Products data
 export let products = [];
+
+// Load products
 export async function loadProducts() {
-  const response = await fetch('https://supersimplebackend.dev/products');
+  const response = await fetch("https://supersimplebackend.dev/products");
   const productsData = await response.json();
+
   products = productsData.map((productDetails) => {
-    if(productDetails.type === 'clothing') {
+    if (productDetails.type === "clothing") {
       return new Clothing(productDetails);
     } else {
       return new Product(productDetails);
     }
   });
-  console.log('All Products are loaded!');
+
+  console.log("All Products are loaded!");
 }
