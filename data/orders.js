@@ -40,7 +40,6 @@ export function renderOrdersHTML() {
 
   // If orders section not found, stop
   if (!ordersGrid) {
-    console.error("Element .js-orders-grid not found!");
     return;
   }
 
@@ -94,7 +93,7 @@ export function renderOrdersHTML() {
           </div>
 
           <div class="product-actions">
-            <a href="tracking.html">
+            <a href="tracking.html?orderId=${order.id}&productId=${p.id}">
               <button class="track-package-button button-secondary">Track package</button>
             </a>
           </div>
