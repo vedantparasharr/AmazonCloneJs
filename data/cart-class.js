@@ -73,7 +73,7 @@ class Cart {
     if (cartItemsQuantity === 0) {
       document.querySelector(".js-order-summary").innerHTML = `
         <p class="view-products-p">Your cart is empty</p>
-        <a href="/amazon.html" class="view-products-button">View Products</a>
+        <a href="/index.html" class="view-products-button">View Products</a>
       `;
     }
   }
